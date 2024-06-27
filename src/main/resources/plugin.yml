@@ -1,0 +1,4 @@
+name: pl_MessagesEvent
+version: '${project.version}'
+main: com.takutou.pl_messagesevent.Pl_MessagesEvent
+api-version: '1.20'
