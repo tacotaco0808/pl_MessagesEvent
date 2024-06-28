@@ -10,6 +10,7 @@ public final class Pl_MessagesEvent extends JavaPlugin {
         getLogger().info("Hello World!");
         getLogger().info("コミット共有テスト");
         this.getCommand("kit").setExecutor(new CommandKit());
+        getServer().getPluginManager().registerEvents(new MyListener(),this);
     }
 
     @Override
