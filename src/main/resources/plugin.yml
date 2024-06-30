@@ -8,3 +8,9 @@ commands:
     description: Your description
     usage: /<command>
     permission: yourplugin.yourcommandpermission
+  setannounce:
+    description: Sets the announcement message.
+    usage: /setannounce <message>
+  setannouncesec:
+    description: Sets the announcement interval in seconds.
+    usage: /setannounceinterval <seconds>
