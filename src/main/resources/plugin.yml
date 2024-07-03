@@ -14,3 +14,6 @@ commands:
   setannouncesec:
     description: Sets the announcement interval in seconds.
     usage: /setannounceinterval <seconds>
+  getdog:
+    description: get dog!.
+    usage: /getdog

@@ -1,5 +1,7 @@
 package com.takutou.pl_messagesevent;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -7,6 +9,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public final class Pl_MessagesEvent extends JavaPlugin {
 
@@ -62,6 +70,35 @@ public final class Pl_MessagesEvent extends JavaPlugin {
                 }
             }
         });
+        /*get dog*/
+        this.getCommand("getdog").setExecutor(new CommandExecutor() {
+            @Override
+            public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+                String url = "https://dog.ceo/api/breeds/image/random";
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest req = HttpRequest.newBuilder()
+                        .uri(URI.create(url))
+                        .GET()
+                        .build();
+                try {
+                    HttpResponse<String> res = client.send(req, HttpResponse.BodyHandlers.ofString());
+
+
+                    String requestBody = res.body();
+                    //Jackson で　Json parse
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode jsonNode = mapper.readTree(requestBody);
+                    //JSONデータの指定したフィールドの値を取得
+                    String status = jsonNode.get("message").asText();
+                    commandSender.sendMessage(status);
+                    return true;
+                } catch (InterruptedException | IOException ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
+
+            }
+        });
         scheduleAnnouncerTask();
     }
 
@@ -88,7 +125,10 @@ public final class Pl_MessagesEvent extends JavaPlugin {
         config.set("announcement-interval", interval);
         saveConfig();;
     }
+    //webAPIをコマンドでたたく。
+    public void getDogURL(){
 
+    }
 
     @Override
     public void onDisable() {
