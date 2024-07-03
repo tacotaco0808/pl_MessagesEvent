@@ -17,3 +17,8 @@ commands:
   getdog:
     description: get dog!.
     usage: /getdog
+    permission: pl_message.getdog
+  permissons:
+    pl_message.getdog:
+      description: getdogをデフォルトで許可
+      default: true

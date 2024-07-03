@@ -74,28 +74,32 @@ public final class Pl_MessagesEvent extends JavaPlugin {
         this.getCommand("getdog").setExecutor(new CommandExecutor() {
             @Override
             public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-                String url = "https://dog.ceo/api/breeds/image/random";
-                HttpClient client = HttpClient.newHttpClient();
-                HttpRequest req = HttpRequest.newBuilder()
-                        .uri(URI.create(url))
-                        .GET()
-                        .build();
-                try {
-                    HttpResponse<String> res = client.send(req, HttpResponse.BodyHandlers.ofString());
+                if(commandSender.hasPermission("pl_message.getdog")){
+                    String url = "https://dog.ceo/api/breeds/image/random";
+                    HttpClient client = HttpClient.newHttpClient();
+                    HttpRequest req = HttpRequest.newBuilder()
+                            .uri(URI.create(url))
+                            .GET()
+                            .build();
+                    try {
+                        HttpResponse<String> res = client.send(req, HttpResponse.BodyHandlers.ofString());
 
 
-                    String requestBody = res.body();
-                    //Jackson で　Json parse
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode jsonNode = mapper.readTree(requestBody);
-                    //JSONデータの指定したフィールドの値を取得
-                    String status = jsonNode.get("message").asText();
-                    commandSender.sendMessage(status);
-                    return true;
-                } catch (InterruptedException | IOException ex) {
-                    ex.printStackTrace();
-                    return false;
+                        String requestBody = res.body();
+                        //Jackson で　Json parse
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode jsonNode = mapper.readTree(requestBody);
+                        //JSONデータの指定したフィールドの値を取得
+                        String status = jsonNode.get("message").asText();
+                        commandSender.sendMessage(status);
+                        return true;
+                    } catch (InterruptedException | IOException ex) {
+                        ex.printStackTrace();
+                        return false;
+                    }
                 }
+                return false;
+
 
             }
         });
